@@ -2,7 +2,6 @@
 
 React Native Developer with 4+ years of experience, shipping 8+ apps to 150K+ users.
 
-**Live site:** https://ritikasoni9.github.io/Ritika-soni-portfolio/
 
 ## About
 
@@ -24,13 +23,6 @@ React Native · Firebase & FCM · Redux Toolkit · TanStack Query · Razorpay ·
 ## Running locally
 
 Just open `index.html` in any browser — no build step required.
-
-## Deploying to GitHub Pages
-
-1. Push this repo to GitHub.
-2. Go to **Settings → Pages**.
-3. Under "Build and deployment", set source to `Deploy from a branch`, branch `main`, folder `/ (root)`.
-4. Save — your live URL will appear at the top of that page within a minute or two.
 
 ## Contact
 
