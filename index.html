@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ritika Soni — React Native Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #101114;
+    --surface: #1a1c22;
+    --surface-2: #22252c;
+    --line: #2c2f38;
+    --text: #f2f3f0;
+    --muted: #9096a3;
+    --accent: #2dd4a0;
+    --accent-dim: rgba(45,212,160,0.14);
+    --amber: #f5a623;
+    --radius: 22px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .ambient{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(650px 420px at 20% -5%, rgba(45,212,160,0.10), transparent 60%),
+      radial-gradient(600px 400px at 85% 8%, rgba(245,166,35,0.07), transparent 60%),
+      var(--bg);
+    animation: drift 16s ease-in-out infinite alternate;
+  }
+  @keyframes drift{
+    0%{ background-position: 0% 0%, 0% 0%; }
+    100%{ background-position: 6% 4%, -5% 6%; }
+  }
+
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+  .display{ font-family: 'Space Grotesk', sans-serif; }
+
+  a{ color: inherit; }
+
+  /* ===== Status bar ===== */
+  .statusbar{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 18px 22px 0 22px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .statusbar .signal-icons{ display:flex; gap:6px; align-items:center; }
+  .bars{ display:flex; align-items:flex-end; gap:2px; height:10px; }
+  .bars span{ width:3px; background: var(--muted); display:block; border-radius:1px; }
+  .bars span:nth-child(1){ height:40%; }
+  .bars span:nth-child(2){ height:60%; }
+  .bars span:nth-child(3){ height:80%; }
+  .bars span:nth-child(4){ height:100%; }
+  .battery{ width:22px; height:11px; border:1.4px solid var(--muted); border-radius:3px; position:relative; padding:1.5px; }
+  .battery::after{ content:''; position:absolute; right:-4px; top:3px; width:2px; height:5px; background:var(--muted); border-radius:0 1px 1px 0; }
+  .battery-fill{ width:78%; height:100%; background: var(--muted); border-radius:1px; }
+
+  /* ===== Hero / lock screen ===== */
+  .hero{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 70px 22px 46px 22px;
+    text-align:center;
+  }
+  .lock-icon{
+    width:34px; height:34px;
+    margin: 0 auto 22px auto;
+    opacity:0.55;
+  }
+  .lock-icon .shackle{
+    transform-origin: 12px 11px;
+    animation: unlock 1.8s cubic-bezier(.5,0,.2,1) 0.4s both;
+  }
+  @keyframes unlock{
+    0%{ transform: translateY(0) rotate(0deg); }
+    35%{ transform: translateY(0) rotate(0deg); }
+    60%{ transform: translateY(-2px) rotate(-14deg); }
+    100%{ transform: translateY(-2px) rotate(-14deg); }
+  }
+  .hero h1{
+    font-size: clamp(2.6rem, 8vw, 4.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    display: inline-block;
+    clip-path: inset(0 100% 0 0);
+    animation: reveal 0.9s cubic-bezier(.6,0,.15,1) 0.15s forwards;
+  }
+  @keyframes reveal{
+    to{ clip-path: inset(0 0 0 0); }
+  }
+  .hero .role{
+    margin-top: 14px;
+    font-size: 1.05rem;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    animation: fade-up 0.6s ease 0.9s forwards;
+  }
+  @keyframes fade-up{
+    from{ opacity:0; transform: translateY(8px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+  .hero .widgets{
+    margin-top: 34px;
+    display:flex;
+    justify-content:center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .widget{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 18px;
+    text-align:left;
+    min-width: 128px;
+    opacity: 0;
+    animation: fade-up 0.6s ease forwards;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .widget:hover{ transform: translateY(-3px); border-color: var(--accent); }
+  .widget:nth-child(1){ animation-delay: 1.05s; }
+  .widget:nth-child(2){ animation-delay: 1.15s; }
+  .widget:nth-child(3){ animation-delay: 1.25s; }
+  .widget .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .widget .label{
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  /* ===== Notifications ===== */
+  .notif-stack{
+    max-width: 560px;
+    margin: 10px auto 0 auto;
+    padding: 0 22px;
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .notif{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 14px 16px;
+    display:flex;
+    gap: 12px;
+    align-items:flex-start;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: notif-in 0.5s ease forwards;
+  }
+  .notif:nth-child(1){ animation-delay: 0.15s; }
+  .notif:nth-child(2){ animation-delay: 0.45s; }
+  .notif:nth-child(3){ animation-delay: 0.75s; }
+  @keyframes notif-in{
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .notif-dot{
+    width: 34px; height:34px;
+    border-radius: 9px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    position: relative;
+  }
+  .notif-dot::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius: 9px;
+    border: 1.5px solid var(--accent);
+    opacity: 0;
+    animation: ping 2.6s ease-out infinite;
+  }
+  .notif:nth-child(1) .notif-dot::after{ animation-delay: 1.2s; }
+  .notif:nth-child(2) .notif-dot::after{ animation-delay: 1.6s; }
+  .notif:nth-child(3) .notif-dot::after{ animation-delay: 2s; }
+  @keyframes ping{
+    0%{ transform: scale(1); opacity: 0.5; }
+    75%{ transform: scale(1.35); opacity: 0; }
+    100%{ opacity: 0; }
+  }
+  .notif{ transition: transform 0.2s ease, border-color 0.2s ease; }
+  .notif:hover{ transform: translateX(3px); border-color: var(--accent); }
+  .notif-body .notif-title{ font-size: 0.9rem; font-weight: 600; }
+  .notif-body .notif-sub{ font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+  .notif-time{ margin-left:auto; font-family:'JetBrains Mono', monospace; font-size:0.7rem; color: var(--muted); flex-shrink:0; }
+
+  /* ===== Section shell ===== */
+  section.block{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 22px 0 22px;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(.2,.7,.3,1);
+  }
+  section.block.reveal{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background: var(--line);
+  }
+
+  /* ===== App grid ===== */
+  .app-grid{
+    margin-top: 24px;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 560px){ .app-grid{ grid-template-columns: repeat(2,1fr);} }
+
+  .app-icon-btn{
+    background:none; border:none; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-family:'Inter', sans-serif;
+    color: var(--text);
+    padding: 6px;
+    border-radius: 14px;
+    transition: background 0.2s ease;
+    opacity: 0;
+    animation: fade-up 0.55s ease forwards;
+  }
+  .app-icon-btn:nth-child(1){ animation-delay: 0.05s; }
+  .app-icon-btn:nth-child(2){ animation-delay: 0.13s; }
+  .app-icon-btn:nth-child(3){ animation-delay: 0.21s; }
+  .app-icon-btn:nth-child(4){ animation-delay: 0.29s; }
+  .app-icon-btn:hover, .app-icon-btn.active{ background: var(--surface); }
+  .app-icon-btn:hover .app-icon{ transform: translateY(-4px) rotate(-2deg) scale(1.05); }
+  .app-icon-btn:active .app-icon{ transform: scale(0.93); }
+  .app-icon-btn.active .app-icon{ box-shadow: 0 0 0 2px var(--accent); }
+  .app-icon{
+    width: 58px; height:58px;
+    border-radius: 16px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    transition: transform 0.25s cubic-bezier(.34,1.4,.64,1), box-shadow 0.25s ease;
+  }
+  .app-icon svg{ width:26px; height:26px; }
+  .app-icon-btn.nudge .app-icon{ animation: nudge 0.6s ease 2; }
+  @keyframes nudge{
+    0%, 100%{ transform: rotate(0deg); }
+    25%{ transform: rotate(-4deg); }
+    75%{ transform: rotate(4deg); }
+  }
+  .app-icon .badge{
+    position:absolute; top:-6px; right:-6px;
+    background: var(--amber);
+    color: #1a1305;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 2px 5px;
+    line-height:1;
+  }
+  .app-icon-btn .app-name{ font-size: 0.78rem; color: var(--muted); text-align:center; }
+
+  .app-panel{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(.2,.7,.3,1);
+  }
+  .app-panel.open{ max-height: 900px; }
+  .app-panel.open .app-panel-inner{
+    animation: fade-up 0.5s ease 0.1s both;
+  }
+  .app-panel-inner{
+    margin-top: 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 26px 24px 26px;
+  }
+  .app-panel-inner h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  .app-panel-inner .tagline{ color: var(--accent); font-size: 0.88rem; margin-top: 4px; }
+  .kv{ margin-top: 18px; display:flex; flex-direction:column; gap: 12px; }
+  .kv .row{ font-size: 0.92rem; }
+  .kv .row b{ color: var(--muted); font-weight: 500; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em; display:block; margin-bottom: 3px; }
+  .tags{ margin-top: 16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+  .impact-line{
+    margin-top: 18px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    display:flex; align-items:center; gap:8px;
+  }
+  .impact-line::before{ content:'↑'; color: var(--accent); font-weight:700; }
+
+  /* ===== Stack bars ===== */
+  .stack-list{ margin-top: 26px; display:flex; flex-direction:column; gap: 16px; }
+  .stack-row .stack-top{ display:flex; justify-content:space-between; font-size: 0.85rem; margin-bottom: 6px; }
+  .stack-row .stack-top span:last-child{ color: var(--muted); font-family:'JetBrains Mono', monospace; font-size:0.78rem; }
+  .stack-track{ height: 6px; background: var(--surface-2); border-radius: 4px; overflow:hidden; }
+  .stack-fill{ height:100%; background: linear-gradient(90deg, var(--accent), #67e8c2); border-radius:4px; width:0; transition: width 1.1s ease; }
+
+  /* ===== Contact / share sheet ===== */
+  .share-sheet{
+    margin-top: 26px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 8px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width:560px){ .share-sheet{ grid-template-columns: 1fr; } }
+  .share-item{
+    display:flex; align-items:center; gap:12px;
+    padding: 16px 14px;
+    border-radius: 14px;
+    text-decoration:none;
+    color: var(--text);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .share-item:hover{ background: var(--surface-2); transform: translateY(-2px); }
+  .share-item:hover .ic{ background: var(--accent-dim); }
+  .share-item:hover .ic svg{ stroke: var(--accent); }
+  .share-item .ic{
+    width:38px; height:38px; border-radius:10px;
+    background: var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    transition: background 0.2s ease;
+  }
+  .share-item .ic svg{ transition: stroke 0.2s ease; }
+  .share-item .ic svg{ width:18px; height:18px; }
+  .share-item .t small{ display:block; color: var(--muted); font-size:0.74rem; margin-top:1px; }
+
+  footer{
+    max-width: 760px;
+    margin: 60px auto 0 auto;
+    padding: 22px 22px 40px 22px;
+    text-align:center;
+    color: var(--muted);
+    font-family:'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .notif{ animation: none; opacity:1; transform:none; }
+    .stack-fill{ transition:none; }
+  }
+</style>
+</head>
+<body>
+  <div class="ambient"></div>
+
+  <div class="statusbar">
+    <span id="clock" class="mono">9:41</span>
+    <div class="signal-icons">
+      <div class="bars"><span></span><span></span><span></span><span></span></div>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><path d="M7.5 2.5C10 2.5 12.2 3.6 13.8 5.3L12.6 6.5C11.3 5.1 9.5 4.2 7.5 4.2C5.5 4.2 3.7 5.1 2.4 6.5L1.2 5.3C2.8 3.6 5 2.5 7.5 2.5Z" fill="#9096a3"/><circle cx="7.5" cy="9" r="1.3" fill="#9096a3"/></svg>
+      <div class="battery"><div class="battery-fill"></div></div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="#9096a3" stroke-width="1.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path class="shackle" d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+    <h1 class="display">Ritika Soni</h1>
+    <div class="role mono">React Native Developer</div>
+    <div class="widgets">
+      <div class="widget"><div class="num display">4+</div><div class="label">Years shipping</div></div>
+      <div class="widget"><div class="num display">8+</div><div class="label">Apps shipped</div></div>
+      <div class="widget"><div class="num display">150K+</div><div class="label">Users reached</div></div>
+    </div>
+  </section>
+
+  <div class="notif-stack">
+    <div class="notif">
+      <div class="notif-dot"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 11-14h-7l1-6z"/></svg></div>
+      <div class="notif-body">
+        <div class="notif-title">Milestone reached</div>
+        <div class="notif-sub">Apps in production now serve 150,000+ users</div>
+      </div>
+      <div class="notif-time">now</div>
+    </div>
+    <div class="notif">
+      <div class="notif-dot"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div class="notif-body">
+        <div class="notif-title">4 apps live right now</div>
+        <div class="notif-sub">Shipped and maintained end-to-end on Play Store and App Store</div>
+      </div>
+      <div class="notif-time">1m</div>
+    </div>
+    <div class="notif">
+      <div class="notif-dot"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
+      <div class="notif-body">
+        <div class="notif-title">Full-stack on React Native</div>
+        <div class="notif-sub">Payments, KYC, real-time data, and push infra — built solo, end to end</div>
+      </div>
+      <div class="notif-time">3m</div>
+    </div>
+  </div>
+
+  <!-- Installed apps -->
+  <section class="block">
+    <div class="eyebrow">Installed apps</div>
+    <div class="app-grid">
+
+      <button class="app-icon-btn" data-target="p1">
+        <div class="app-icon" style="background:linear-gradient(160deg,#1c6b52,#134536);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#bdf5df" stroke-width="1.6"><path d="M12 21c-4.5-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-2.5 7-7 10z"/><circle cx="12" cy="11" r="2.4"/></svg>
+        </div>
+        <span class="app-name">weRpatients</span>
+      </button>
+
+      <button class="app-icon-btn" data-target="p2">
+        <div class="app-icon" style="background:linear-gradient(160deg,#5a4a1c,#3b2f10);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f6dfa3" stroke-width="1.6"><path d="M4 12a8 8 0 0 1 16 0"/><path d="M4 12v3a2 2 0 0 0 2 2h1v-5H4z"/><path d="M20 12v3a2 2 0 0 1-2 2h-1v-5h3z"/><path d="M9 19h6"/></svg>
+        </div>
+        <span class="app-name">Barunet</span>
+      </button>
+
+      <button class="app-icon-btn" data-target="p3">
+        <div class="app-icon" style="background:linear-gradient(160deg,#1c3b5a,#10263b); position:relative;">
+          <span class="badge">1K+</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a9d0f5" stroke-width="1.6"><rect x="3" y="10" width="18" height="7" rx="2"/><path d="M5 10 7 5h10l2 5"/><circle cx="7.5" cy="17" r="1.2" fill="#a9d0f5"/><circle cx="16.5" cy="17" r="1.2" fill="#a9d0f5"/></svg>
+        </div>
+        <span class="app-name">Nimbo</span>
+      </button>
+
+      <button class="app-icon-btn" data-target="p4">
+        <div class="app-icon" style="background:linear-gradient(160deg,#5a1c2e,#3b1020); position:relative;">
+          <span class="badge">LIVE</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f5a9bd" stroke-width="1.6"><path d="M4 20 15 9"/><path d="M13 4l7 7-2 2-7-7z"/><circle cx="6" cy="18" r="2"/></svg>
+        </div>
+        <span class="app-name">Draftmonkey</span>
+      </button>
+
+    </div>
+
+    <!-- Panel: weRpatients -->
+    <div class="app-panel" id="p1">
+      <div class="app-panel-inner">
+        <h3 class="display">weRpatients</h3>
+        <div class="tagline mono">Health &amp; environmental alerts</div>
+        <div class="kv">
+          <div class="row"><b>Problem</b>People needed real-time alerts for air quality, UV, and pollen levels wherever they were.</div>
+          <div class="row"><b>Role</b>Built the entire app end to end, and wired up Firebase for live environmental data plus FCM for push alerts.</div>
+        </div>
+        <div class="impact-line">30% faster alert response time · live on Play Store</div>
+        <div class="tags">
+          <span class="tag">React Native</span><span class="tag">Firebase</span><span class="tag">Location API</span><span class="tag">FCM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Barunet -->
+    <div class="app-panel" id="p2">
+      <div class="app-panel-inner">
+        <h3 class="display">Barunet</h3>
+        <div class="tagline mono">Sikh awareness &amp; daily practice</div>
+        <div class="kv">
+          <div class="row"><b>Problem</b>Reaching a global audience with Nitnem, Sehaj Paath, and Gurbani Radio in one reliable app.</div>
+          <div class="row"><b>Role</b>Built the Nitnem, Sehaj Paath, and Gurbani Radio features from the ground up, and cut cold-start time by optimizing the app's startup sequence.</div>
+        </div>
+        <div class="impact-line">1,000+ downloads · 4.5★ rating · 15% faster startup</div>
+        <div class="tags">
+          <span class="tag">React Native CLI</span><span class="tag">Audio Streaming</span><span class="tag">REST API</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Nimbo -->
+    <div class="app-panel" id="p3">
+      <div class="app-panel-inner">
+        <h3 class="display">Nimbo</h3>
+        <div class="tagline mono">Vehicle booking, made verified</div>
+        <div class="kv">
+          <div class="row"><b>Role</b>Integrated Razorpay payments, OTP login, and KYC verification, with Redux Toolkit managing state across the booking flow.</div>
+        </div>
+        <div class="impact-line">1,000+ downloads · 40% less manual verification work</div>
+        <div class="tags">
+          <span class="tag">React Native</span><span class="tag">Razorpay</span><span class="tag">OTP</span><span class="tag">KYC</span><span class="tag">Redux Toolkit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel: Draftmonkey -->
+    <div class="app-panel" id="p4">
+      <div class="app-panel-inner">
+        <h3 class="display">Draftmonkey</h3>
+        <div class="tagline mono">Fantasy cricket, at match pace</div>
+        <div class="kv">
+          <div class="row"><b>Role</b>Pulled live match data from the Cricbuzz API and used TanStack Query to keep scores and standings in sync without over-fetching.</div>
+        </div>
+        <div class="impact-line">Holds up under 1,000+ concurrent users during live matches</div>
+        <div class="tags">
+          <span class="tag">React Native</span><span class="tag">Cricbuzz API</span><span class="tag">TanStack Query</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section class="block">
+    <div class="eyebrow">Core stack</div>
+    <div class="stack-list" id="stackList">
+      <div class="stack-row" data-pct="95"><div class="stack-top"><span>React Native</span><span>daily driver</span></div><div class="stack-track"><div class="stack-fill"></div></div></div>
+      <div class="stack-row" data-pct="80"><div class="stack-top"><span>Firebase &amp; FCM</span><span>real-time &amp; push</span></div><div class="stack-track"><div class="stack-fill"></div></div></div>
+      <div class="stack-row" data-pct="75"><div class="stack-top"><span>Redux Toolkit / TanStack Query</span><span>state &amp; data</span></div><div class="stack-track"><div class="stack-fill"></div></div></div>
+      <div class="stack-row" data-pct="70"><div class="stack-top"><span>Payments &amp; KYC (Razorpay, OTP)</span><span>trust &amp; verification</span></div><div class="stack-track"><div class="stack-fill"></div></div></div>
+      <div class="stack-row" data-pct="65"><div class="stack-top"><span>REST &amp; third-party APIs</span><span>Cricbuzz, location, audio</span></div><div class="stack-track"><div class="stack-fill"></div></div></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="block">
+    <div class="eyebrow">Get in touch</div>
+    <div class="share-sheet">
+      <a class="share-item" href="mailto:soniranu613@gmail.com">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#9096a3" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+        <div class="t">Email<small>soniranu613@gmail.com</small></div>
+      </a>
+      <a class="share-item" href="https://www.linkedin.com/in/ritika-soni-00b335226/" target="_blank" rel="noopener">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#9096a3" stroke-width="1.7"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+        <div class="t">LinkedIn<small>/in/ritika-soni</small></div>
+      </a>
+      <a class="share-item" href="https://github.com/Ritikasoni9/Ritika-soni-portfolio" target="_blank" rel="noopener">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#9096a3" stroke-width="1.7"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.6 2.8 5.5 3.1 5.5 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.1 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></div>
+        <div class="t">GitHub<small>Ritika-soni-portfolio</small></div>
+      </a>
+    </div>
+  </section>
+
+  <footer>designed &amp; built for mobile-first work · updated 2026</footer>
+
+<script>
+  // live clock in the fake status bar
+  function tick(){
+    const el = document.getElementById('clock');
+    const now = new Date();
+    let h = now.getHours();
+    const m = now.getMinutes().toString().padStart(2,'0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    el.textContent = h + ':' + m + ' ' + ampm;
+  }
+  tick();
+  setInterval(tick, 15000);
+
+  // app icon expand/collapse
+  document.querySelectorAll('.app-icon-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-target');
+      const panel = document.getElementById(id);
+      const isOpen = panel.classList.contains('open');
+      document.querySelectorAll('.app-panel.open').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.app-icon-btn.active').forEach(b => b.classList.remove('active'));
+      if(!isOpen){
+        panel.classList.add('open');
+        btn.classList.add('active');
+        setTimeout(() => panel.scrollIntoView({behavior:'smooth', block:'nearest'}), 250);
+      }
+    });
+  });
+
+  // animate stack bars when in view
+  const bars = document.querySelectorAll('.stack-row');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const fill = entry.target.querySelector('.stack-fill');
+        fill.style.width = entry.target.getAttribute('data-pct') + '%';
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.4});
+  bars.forEach(b => io.observe(b));
+
+  // reveal each section block as it scrolls into view
+  const blocks = document.querySelectorAll('section.block');
+  const blockIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('reveal');
+        blockIO.unobserve(entry.target);
+      }
+    });
+  }, {threshold: 0.15});
+  blocks.forEach(b => blockIO.observe(b));
+
+  // one-time nudge hint on the app icons so first-time visitors know they're tappable
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    setTimeout(() => {
+      const icons = document.querySelectorAll('.app-icon-btn');
+      icons.forEach((btn, i) => {
+        setTimeout(() => {
+          if(!btn.classList.contains('active')) btn.classList.add('nudge');
+        }, i * 120);
+      });
+    }, 3200);
+  }
+</script>
+
+</body>
+</html>
