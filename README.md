@@ -1,40 +1,162 @@
-# Ritika Soni — React Native Developer Portfolio
+<div align="center">
 
-React Native Developer with 4+ years of experience, shipping 8+ apps to 150K+ users.
+# 👋 Hi, I'm Ritika Soni
 
-**Live site:** https://ritikasoni9.github.io/Ritika-soni-portfolio/
+### 🚀 React Native Developer | Mobile App Engineer
 
-## About
+Building scalable, high-performance mobile applications with **4+ years of experience**, **8+ production apps**, and products serving **150K+ users**.
 
-This repo contains a single-page portfolio site (`index.html`) built to showcase featured projects, core tech stack, and contact info.
+<p>
+  <a href="https://github.com/Ritikasoni9">
+    <img src="https://img.shields.io/github/followers/Ritikasoni9?style=for-the-badge&logo=github&color=181717" />
+  </a>
+  <a href="https://www.linkedin.com/in/ritika-soni">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
+  </a>
+  <a href="mailto:soniranu613@gmail.com">
+    <img src="https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
+  </a>
+</p>
 
-## Featured Projects
+<p>
+<img src="https://img.shields.io/badge/Experience-4%2B%20Years-blue?style=flat-square"/>
+<img src="https://img.shields.io/badge/Apps-8%2B-success?style=flat-square"/>
+<img src="https://img.shields.io/badge/Users-150K%2B-orange?style=flat-square"/>
+<img src="https://img.shields.io/badge/Open%20to-Opportunities-brightgreen?style=flat-square"/>
+</p>
 
-| Project | Status | Tech | Impact |
-|---|---|---|---|
-| **weRpatients** — Health & Environmental App | Live | React Native, Firebase, Location API, FCM | 30% faster alert response · Live on Play Store |
-| **Barunet** — Sikh Awareness App | Live | React Native CLI, Audio Streaming, REST API | 1,000+ downloads · 4.9★ rating · 15% faster startup |
-| **Nimbo** + Nimbo Hub Manager — Vehicle Booking App | Live | React Native, Razorpay, OTP, KYC, Redux Toolkit | 1,000+ downloads · 40% less manual verification |
-| **Draftmonkey** — Fantasy Cricket | Internal | React Native, Cricbuzz API, TanStack Query | Supports 1,000+ concurrent users |
-| **AIS Timer** — Employee Tracker | Internal | React Native, REST API | In daily use across teams |
+</div>
 
-## Tech Stack
+---
 
-React Native · Firebase & FCM · Redux Toolkit · TanStack Query · Razorpay · REST APIs
+# 🌐 Portfolio
 
-## Running locally
+🔗 **Live Portfolio:** https://your-portfolio-url.vercel.app
 
-Just open `index.html` in any browser — no build step required.
+📂 **Repository:** https://github.com/Ritikasoni9/Ritika-soni-portfolio
 
-## Deploying to GitHub Pages
+---
 
-1. Push this repo to GitHub.
-2. Go to **Settings → Pages**.
-3. Under "Build and deployment", set source to `Deploy from a branch`, branch `main`, folder `/ (root)`.
-4. Save — your live URL will appear at the top of that page within a minute or two.
+# 💫 About Me
 
-## Contact
+I'm a **React Native Developer** passionate about building modern, scalable mobile applications.
 
-- Email: soniranu613@gmail.com
-- LinkedIn: [/in/ritika-soni](https://www.linkedin.com/in/ritika-soni-00b335226/)
-- GitHub: [Ritika-soni-portfolio](https://github.com/Ritikasoni9/Ritika-soni-portfolio)
+### What I do
+
+- 📱 Cross-platform Mobile App Development
+- 🔥 Firebase Integration
+- 💳 Payment Gateway Integration
+- 📍 Maps & Location Services
+- 🔔 Push Notifications
+- ⚡ Performance Optimization
+- 🔗 REST API Integration
+- 🏗 Clean Architecture & State Management
+
+---
+
+# 🚀 Featured Projects
+
+| Project | Description | Impact |
+|---------|-------------|--------|
+| 🏥 **weRpatients** | Healthcare & Environmental Monitoring Platform | 🚀 30% faster emergency response · 📲 Live on Google Play |
+| 🙏 **Barunet** | Sikh Awareness & Community Application | ⭐ 1K+ Downloads · ⭐ 4.5 Rating |
+| 🚗 **Nimbo** | Vehicle Booking & Verification Platform | 📈 40% reduction in manual verification |
+| 🏏 **DraftMonkey** | Fantasy Cricket Application | 👥 Supports 1000+ concurrent users |
+
+---
+
+# 🛠 Tech Stack
+
+### Mobile
+
+<p>
+<img src="https://skillicons.dev/icons?i=react,firebase,redux,javascript,html,css,git,github,vscode" />
+</p>
+
+### Technologies
+
+- ⚛️ React Native
+- 🔥 Firebase
+- 📦 Redux Toolkit
+- 🔄 TanStack Query
+- 💳 Razorpay
+- 📍 Google Maps API
+- 🔔 Firebase Cloud Messaging
+- 🌐 REST APIs
+- 🔐 OTP Authentication
+- 📱 Push Notifications
+
+---
+
+# 📈 Professional Highlights
+
+🏆 **4+ Years** of React Native Development
+
+📱 **8+ Mobile Applications** Delivered
+
+👥 **150K+ Active Users**
+
+⭐ **Multiple Production Apps** Published
+
+⚡ Performance Optimization Expert
+
+🚀 Clean Architecture & Scalable Code
+
+---
+
+# 📂 Repository Structure
+
+```text
+.
+├── assets/
+├── css/
+├── js/
+├── index.html
+└── README.md
+```
+
+---
+
+# 🚀 Run Locally
+
+```bash
+git clone https://github.com/Ritikasoni9/Ritika-soni-portfolio.git
+```
+
+```bash
+cd Ritika-soni-portfolio
+```
+
+Simply open **index.html** in your browser.
+
+No installation required ✅
+
+---
+
+# 📬 Connect With Me
+
+<p align="left">
+
+<a href="mailto:soniranu613@gmail.com">
+<img src="https://img.shields.io/badge/Gmail-EA4335?style=for-the-badge&logo=gmail&logoColor=white"/>
+</a>
+
+<a href="https://www.linkedin.com/in/ritika-soni">
+<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+
+<a href="https://github.com/Ritikasoni9">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white"/>
+</a>
+
+</p>
+
+---
+
+<div align="center">
+
+### ⭐ If you found this repository helpful, please consider giving it a star!
+
+Made with ❤️ by **Ritika Soni**
+
+</div>
