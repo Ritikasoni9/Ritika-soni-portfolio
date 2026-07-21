@@ -31,7 +31,6 @@ Building scalable, high-performance mobile applications with **4+ years of exper
 
 # 🌐 Portfolio
 
-🔗 **Live Portfolio:** https://your-portfolio-url.vercel.app
 
 📂 **Repository:** https://github.com/Ritikasoni9/Ritika-soni-portfolio
 
